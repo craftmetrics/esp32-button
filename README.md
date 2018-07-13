@@ -35,10 +35,8 @@ while (true) {
 
 Triggered when the button is first considered pressed.
 
+Also triggered every 50ms during a long press.
+
 ### BUTTON_UP
 
 Triggered when the button is considered released. In most cases you can use either the UP or DOWN event for your application, and ignore the other.
-
-### BUTTON_LONG
-
-Triggered if the button is held down.
