@@ -120,7 +120,7 @@ QueueHandle_t * button_init(unsigned long long pin_select) {
 
     // Initialize global state and queue
     debounce = calloc(pin_count, sizeof(debounce_t));
-    queue = xQueueCreate(32, sizeof(button_event_t));
+    queue = xQueueCreate(4, sizeof(button_event_t));
 
     // Scan the pin map to determine each pin number, populate the state
     uint32_t idx = 0;
