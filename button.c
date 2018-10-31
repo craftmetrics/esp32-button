@@ -112,7 +112,7 @@ QueueHandle_t * button_init(unsigned long long pin_select) {
 
     // Scan the pin map to determine number of pins
     pin_count = 0;
-    for (int pin=0; pin<=36; pin++) {
+    for (int pin=0; pin<=39; pin++) {
         if ((1ULL<<pin) & pin_select) {
             pin_count++;
         }
@@ -124,7 +124,7 @@ QueueHandle_t * button_init(unsigned long long pin_select) {
 
     // Scan the pin map to determine each pin number, populate the state
     uint32_t idx = 0;
-    for (int pin=0; pin<=36; pin++) {
+    for (int pin=0; pin<=39; pin++) {
         if ((1ULL<<pin) & pin_select) {
             ESP_LOGI(TAG, "Registering button input: %d", pin);
             debounce[idx].pin = pin;
