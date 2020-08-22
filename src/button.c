@@ -99,6 +99,12 @@ static void button_task(void *pvParameter)
 }
 
 QueueHandle_t * button_init(unsigned long long pin_select) {
+    return pulled_button_init(pin_select, GPIO_FLOATING);
+}
+
+
+QueueHandle_t * pulled_button_init(unsigned long long pin_select, gpio_pull_mode_t pull_mode)
+{
     if (pin_count != -1) {
         ESP_LOGI(TAG, "Already initialized");
         return NULL;
@@ -107,6 +113,8 @@ QueueHandle_t * button_init(unsigned long long pin_select) {
     // Configure the pins
     gpio_config_t io_conf;
     io_conf.mode = GPIO_MODE_INPUT;
+    io_conf.pull_up_en = (pull_mode == GPIO_PULLUP_ONLY || pull_mode == GPIO_PULLUP_PULLDOWN);
+    io_conf.pull_down_en = (pull_mode == GPIO_PULLDOWN_ONLY || pull_mode == GPIO_PULLUP_PULLDOWN);;
     io_conf.pin_bit_mask = pin_select;
     gpio_config(&io_conf);
 
