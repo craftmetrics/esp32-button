@@ -5,9 +5,10 @@
 
 #define BUTTON_DOWN (1)
 #define BUTTON_UP (2)
+#define BUTTON_HELD (3)
 
 typedef struct {
-	uint8_t pin;
+  uint8_t pin;
     uint8_t event;
 } button_event_t;
 
