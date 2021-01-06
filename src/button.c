@@ -1,5 +1,3 @@
-// https://github.com/craftmetrics/esp32-button/tree/master/src
-
 #include <stdint.h>
 #include <string.h>
 #include <stdbool.h>
