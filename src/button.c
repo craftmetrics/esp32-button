@@ -1,3 +1,5 @@
+// https://github.com/craftmetrics/esp32-button/tree/master/src
+
 #include <stdint.h>
 #include <string.h>
 #include <stdbool.h>
@@ -14,10 +16,11 @@
 #define TAG "BUTTON"
 
 typedef struct {
-	uint8_t pin;
-    bool inverted;
-	uint16_t history;
-    uint64_t down_time;
+  uint8_t pin;
+  bool inverted;
+  uint16_t history;
+  uint32_t down_time;
+  uint32_t next_long_time;
 } debounce_t;
 
 int pin_count = -1;
@@ -53,6 +56,7 @@ static bool button_up(debounce_t *d) {
 }
 
 #define LONG_PRESS_DURATION (2000)
+#define LONG_PRESS_REPEAT (50)
 
 static uint32_t millis() {
     return esp_timer_get_time() / 1000;
@@ -68,25 +72,17 @@ static void send_event(debounce_t db, int ev) {
 
 static void button_task(void *pvParameter)
 {
-    while (1) {
+    for (;;) {
         for (int idx=0; idx<pin_count; idx++) {
             update_button(&debounce[idx]);
-            if (debounce[idx].down_time && (millis() - debounce[idx].down_time > LONG_PRESS_DURATION)) {
-                debounce[idx].down_time = 0;
+            if (debounce[idx].down_time && millis() >= debounce[idx].next_long_time) {
                 ESP_LOGI(TAG, "%d LONG", debounce[idx].pin);
-                int i=0;
-                while (!button_up(&debounce[idx])) {
-                    if (!i) send_event(debounce[idx], BUTTON_DOWN);
-                    i++;
-                    if (i>=5) i=0;
-                    vTaskDelay(10/portTICK_PERIOD_MS);
-                    update_button(&debounce[idx]);
-                }
-                ESP_LOGI(TAG, "%d UP", debounce[idx].pin);
-                send_event(debounce[idx], BUTTON_UP);
-            } else if (button_down(&debounce[idx])) {
+                debounce[idx].next_long_time = debounce[idx].next_long_time + LONG_PRESS_REPEAT;
+                send_event(debounce[idx], BUTTON_HELD);
+            } else if (button_down(&debounce[idx]) && debounce[idx].down_time == 0) {
                 debounce[idx].down_time = millis();
                 ESP_LOGI(TAG, "%d DOWN", debounce[idx].pin);
+                debounce[idx].next_long_time = debounce[idx].down_time + LONG_PRESS_DURATION;
                 send_event(debounce[idx], BUTTON_DOWN);
             } else if (button_up(&debounce[idx])) {
                 debounce[idx].down_time = 0;
