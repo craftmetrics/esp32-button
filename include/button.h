@@ -12,6 +12,10 @@
 #define CONFIG_ESP32_BUTTON_LONG_PRESS_REPEAT_MS (50)
 #endif
 
+#ifndef CONFIG_ESP32_BUTTON_QUEUE_SIZE
+#define CONFIG_ESP32_BUTTON_QUEUE_SIZE (4)
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
