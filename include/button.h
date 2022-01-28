@@ -4,6 +4,14 @@
 #include "freertos/queue.h"
 #include "driver/gpio.h"
 
+#ifndef CONFIG_ESP32_BUTTON_LONG_PRESS_DURATION_MS
+#define CONFIG_ESP32_BUTTON_LONG_PRESS_DURATION_MS (2000)
+#endif
+
+#ifndef CONFIG_ESP32_BUTTON_LONG_PRESS_REPEAT_MS
+#define CONFIG_ESP32_BUTTON_LONG_PRESS_REPEAT_MS (50)
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

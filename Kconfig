@@ -1,0 +1,15 @@
+menu "ESP32 Button"
+
+config ESP32_BUTTON_LONG_PRESS_DURATION_MS
+    int "Button long press duration in ms"
+    default 2000
+    help
+        Defines how long a button has to be pressed to trigger BUTTON_HELD events.
+
+config ESP32_BUTTON_LONG_PRESS_REPEAT_MS
+    int "Button long press repetition in ms"
+    default 50
+    help
+        Defines in which interval BUTTON_HELD events are generated while a button is long pressed.
+
+endmenu

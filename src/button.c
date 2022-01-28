@@ -53,9 +53,6 @@ static bool button_up(debounce_t *d) {
     return button_fell(d);
 }
 
-#define LONG_PRESS_DURATION (2000)
-#define LONG_PRESS_REPEAT (50)
-
 static uint32_t millis() {
     return esp_timer_get_time() / 1000;
 }
@@ -75,12 +72,12 @@ static void button_task(void *pvParameter)
             update_button(&debounce[idx]);
             if (debounce[idx].down_time && millis() >= debounce[idx].next_long_time) {
                 ESP_LOGI(TAG, "%d LONG", debounce[idx].pin);
-                debounce[idx].next_long_time = debounce[idx].next_long_time + LONG_PRESS_REPEAT;
+                debounce[idx].next_long_time = debounce[idx].next_long_time + CONFIG_ESP32_BUTTON_LONG_PRESS_REPEAT_MS;
                 send_event(debounce[idx], BUTTON_HELD);
             } else if (button_down(&debounce[idx]) && debounce[idx].down_time == 0) {
                 debounce[idx].down_time = millis();
                 ESP_LOGI(TAG, "%d DOWN", debounce[idx].pin);
-                debounce[idx].next_long_time = debounce[idx].down_time + LONG_PRESS_DURATION;
+                debounce[idx].next_long_time = debounce[idx].down_time + CONFIG_ESP32_BUTTON_LONG_PRESS_DURATION_MS;
                 send_event(debounce[idx], BUTTON_DOWN);
             } else if (button_up(&debounce[idx])) {
                 debounce[idx].down_time = 0;
