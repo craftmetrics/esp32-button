@@ -1,0 +1,23 @@
+menu "ESP32 Button"
+
+config ESP32_BUTTON_LONG_PRESS_DURATION_MS
+    int "Button long press duration in ms"
+    default 2000
+    help
+        Defines how long a button has to be pressed to trigger BUTTON_HELD events.
+
+config ESP32_BUTTON_LONG_PRESS_REPEAT_MS
+    int "Button long press repetition in ms"
+    default 50
+    help
+        Defines in which interval BUTTON_HELD events are generated while a button is long pressed.
+
+config ESP32_BUTTON_QUEUE_SIZE
+    int "Size of the button event queue"
+    default 4
+    help
+        Defines how many button events the queue can store. If the queue is full because the events
+        are not retreived from the queue quickly enough, the button task has to wait and does not
+        process any button presses during this time.
+
+endmenu
