@@ -20,4 +20,11 @@ config ESP32_BUTTON_QUEUE_SIZE
         are not retreived from the queue quickly enough, the button task has to wait and does not
         process any button presses during this time.
 
+config ESP32_BUTTON_TASK_STACK_SIZE
+    int "Button update task stack size"
+    default 3072
+    help
+        Configure the stack size of the button task in bytes. Reducing this value to 2048 should not
+        cause any problems.
+
 endmenu
