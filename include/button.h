@@ -16,6 +16,10 @@
 #define CONFIG_ESP32_BUTTON_QUEUE_SIZE (4)
 #endif
 
+#ifndef CONFIG_ESP32_BUTTON_TASK_STACK_SIZE
+#define CONFIG_ESP32_BUTTON_TASK_STACK_SIZE 4096
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
