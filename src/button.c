@@ -23,7 +23,7 @@ typedef struct {
 
 int pin_count = -1;
 debounce_t * debounce;
-QueueHandle_t queue;
+QueueHandle_t queue = NULL;
 
 static void update_button(debounce_t *d) {
     d->history = (d->history << 1) | gpio_get_level(d->pin);
@@ -138,5 +138,9 @@ QueueHandle_t pulled_button_init(unsigned long long pin_select, gpio_pull_mode_t
     // Spawn a task to monitor the pins
     xTaskCreate(&button_task, "button_task", CONFIG_ESP32_BUTTON_TASK_STACK_SIZE, NULL, 10, NULL);
 
+    return queue;
+}
+
+QueueHandle_t button_get_queue(void) {
     return queue;
 }
