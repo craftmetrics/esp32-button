@@ -8,6 +8,7 @@
 #include "freertos/queue.h"
 #include "driver/gpio.h"
 #include "esp_log.h"
+#include "esp_timer.h"
 
 #include "button.h"
 
@@ -89,8 +90,8 @@ static void button_task(void *pvParameter)
     }
 }
 
-QueueHandle_t button_init(unsigned long long pin_select) {
-    return pulled_button_init(pin_select, GPIO_FLOATING);
+QueueHandle_t button_init(unsigned long long pin_select, gpio_pull_mode_t pull_mode) {
+    return pulled_button_init(pin_select, pull_mode);
 }
 
 
